@@ -1,0 +1,40 @@
+
+.todo-form{
+  margin-inline: 2em;
+  display: flex;
+  justify-content: center;
+  margin-block-start: 2em
+}
+
+.todo-form button{
+  background: orangered;
+  color: #FFF;
+  width: 100px;
+  height: 36px;
+  margin-left: 1em;
+  border-width: 0px;
+  cursor: pointer;
+  box-shadow: 0px 0px 3px rgba(128, 128, 128,0.3);
+}
+
+.todo-form button:disabled{
+  background-color: gray;
+}
+
+.todo-form button:hover{
+  background-color: orange;
+}
+
+.todo-form input{
+  width: 300px;
+  color: #1d2a35;
+}
+
+.error{
+  margin-inline: 40px;
+  display: flex;
+  color: red;
+  background: #FFF;
+  font-size: 0.7em;
+  padding: 2px 5px
+}

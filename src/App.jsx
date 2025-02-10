@@ -3,6 +3,8 @@ import {PageTitle} from './components/pageTitle';
 import {Brief} from './components/Breif';
 import {TodoForm} from './components/TodoForm'
 import {TodoList} from './components/TodoList'
+import {FilterChoices} from './components/FilterChoices'
+import {filters} from './utils/enums'
 import style from './App.module.css'
 
 
@@ -16,10 +18,13 @@ import style from './App.module.css'
 // }
 const BASE_URL = "http://localhost:5000"
 
+
 function App() {
   const [tasks, setTasks] = useState([]) //hook
   const [errorMessage, setErrorMessage] = useState("")
   const [updated, setUpdated] = useState(false)
+  const [filterBy, setFilterBy] = useState(null)
+  const [filterdTasks, setFilteredTasks] = useState([])
 
   async function addTaskToList (task){
     try {
@@ -40,7 +45,7 @@ function App() {
 
   async function deleteItem(taskId){
     try {
-      const res = await fetch(`${BASE_URL}/todoList/${taskId}`,{
+      await fetch(`${BASE_URL}/todoList/${taskId}`,{
         method: "DELETE"
       })
       setUpdated(!updated)
@@ -53,7 +58,7 @@ function App() {
 
   async function modifyItem(task){
     try {
-      const res = await fetch(`${BASE_URL}/todoList/${task.id}`, {
+      await fetch(`${BASE_URL}/todoList/${task.id}`, {
         method: "PUT",
         body: JSON.stringify({ ...task })
       })
@@ -65,11 +70,38 @@ function App() {
     
   }
 
+  function filterTasks (tasks, filterBy){
+    switch (filterBy) {
+      case filters.COMPLETED:
+        setFilteredTasks(tasks.filter(task => task.completed === true))
+        break;
+      case filters.IN_PROGRESS:
+        setFilteredTasks(tasks.filter(task => task.completed === false))
+        break;
+      default:
+        setFilteredTasks(tasks)
+        break;
+    }
+    if(filterBy === null){
+      setFilteredTasks(tasks)
+    }
+  }
+
+  function handleFilter(filter) {
+    setFilterBy(filter)
+  }
+
   async function getList(){
     try {
       const res = await fetch(`${BASE_URL}/todoList`)
       const tasks = await res.json()
-      Array.isArray(tasks) ? setTasks(tasks) : setTasks([])
+      if(Array.isArray(tasks)){
+        setTasks(tasks)
+        filterTasks(tasks, filterBy)
+      }else{
+        setTasks([])
+        setFilteredTasks([])
+      }
     } catch (error) {
       setErrorMessage(error.message)
     }
@@ -82,17 +114,18 @@ function App() {
     return () => {
       setErrorMessage("")
     }
-  }, [updated])
+  }, [updated, filterBy])
 
   return (
     <div className={style.container}>
       <PageTitle title = "My TO-DO List" />
       <Brief taskNo={tasks.length} />
       <TodoForm tasksList={tasks} addTaskToList={addTaskToList} />
+      <FilterChoices filterHandler={handleFilter} activeFilter = {filterBy} />
       {
         errorMessage && <p className={style.error}>{errorMessage}</p>
       }
-      <TodoList tasksList = {tasks} deleteItem = {deleteItem} modifyItem = {modifyItem}/>
+      <TodoList tasksList = {filterdTasks} deleteItem = {deleteItem} modifyItem = {modifyItem}/>
     </div>
   );
 }

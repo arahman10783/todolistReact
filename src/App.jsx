@@ -1,4 +1,3 @@
-import './App.css';
 import {useState} from 'react'
 import {PageTitle} from './components/pageTitle';
 import {Brief} from './components/Breif';

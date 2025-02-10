@@ -28,6 +28,7 @@
 .todo-form input{
   width: 300px;
   color: #1d2a35;
+  padding: 5px;
 }
 
 .error{

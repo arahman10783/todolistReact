@@ -7,48 +7,8 @@
   position: relative;
 }
 
-.todo-element{
-  list-style: none;
-  background-color: rgba(255,255,255,0.3);
-  height: 3em;
-  height: 3em;
-  margin-bottom: 0.5em;
-  padding: 0.5em;
-  box-sizing: border-box;
-  display: flex;
-}
-
 .info{
   text-align: center;
   margin-block: 4em;
   opacity: 0.5;
-}
-.completedTask {
-  text-decoration: line-through;
-}
-.todo-element span{
-  flex-grow: 1;
-  line-height: 2em;
-  padding-inline-start: 0.5em;
-}
-.delete{
-  background: #FFF;
-  color: red;
-  height: 32px;
-  margin-left: 1em;
-  border-width: 0px;
-  cursor: pointer;
-  box-shadow: 0px 0px 3px rgba(128, 128, 128,0.3);
-}
-
-
-/*customize checkbox*/
-
-.checkLabel{
-  content: url("../../images/check-box.png");
-  background: #FFF
-}
-
-.checkLabel:has( .checkbox:checked) {
-  content: url("../../images/check-mark.png")
 }

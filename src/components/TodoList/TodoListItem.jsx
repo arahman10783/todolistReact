@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import style from './todoList.module.css'
+import style from './todoListItem.module.css'
 
 export default function TodoListItem ({task, deleteItem, modifyItem}){
   const [isChecked, setIsChecked] = useState(false)

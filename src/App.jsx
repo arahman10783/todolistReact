@@ -37,9 +37,9 @@ function App() {
   }
 
   function modifyItem(task){
-    const filterdTasks = tasks.filter (element => element.id !== task.id)
+    const filteredTasks = tasks.filter (element => element.id !== task.id)
     setTasks([
-      ...filterdTasks,
+      ...filteredTasks,
       task
     ])
   }

@@ -1,9 +1,8 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {PageTitle} from './components/pageTitle';
 import {Brief} from './components/Breif';
 import {TodoForm} from './components/TodoForm'
 import {TodoList} from './components/TodoList'
-import { v4 as uuidv4 } from 'uuid';
 import style from './App.module.css'
 
 
@@ -15,39 +14,84 @@ import style from './App.module.css'
 //   }
 //   return [state, setState]
 // }
+const BASE_URL = "http://localhost:5000"
 
 function App() {
   const [tasks, setTasks] = useState([]) //hook
+  const [errorMessage, setErrorMessage] = useState("")
+  const [updated, setUpdated] = useState(false)
 
-  function addTaskToList (task){
-    const newTask = {
-      id: uuidv4(), //use UUID
-      title: task,
-      completed: false
+  async function addTaskToList (task){
+    try {
+      await fetch(`${BASE_URL}/todoList`, {
+        method: "POST",
+        body: JSON.stringify({
+          title: task,
+          completed: false
+        })
+      })
+      setUpdated(!updated)
+      setErrorMessage("")
+    } catch (error) {
+      setErrorMessage(error.message)
     }
-    setTasks((prevState) => [
-      ...prevState,
-      newTask
-    ])
+    
   }
 
-  function deleteItem(taskid){
-    setTasks(tasks => tasks.filter(task => task.id !== taskid))
+  async function deleteItem(taskId){
+    try {
+      const res = await fetch(`${BASE_URL}/todoList/${taskId}`,{
+        method: "DELETE"
+      })
+      setUpdated(!updated)
+      setErrorMessage("")
+      
+    } catch (error) {
+      setErrorMessage(error.message)
+    }
   }
 
-  function modifyItem(task){
-    const filteredTasks = tasks.filter (element => element.id !== task.id)
-    setTasks([
-      ...filteredTasks,
-      task
-    ])
+  async function modifyItem(task){
+    try {
+      const res = await fetch(`${BASE_URL}/todoList/${task.id}`, {
+        method: "PUT",
+        body: JSON.stringify({ ...task })
+      })
+      setUpdated(!updated)
+      setErrorMessage("")
+    } catch (error) {
+      setErrorMessage(error.message)
+    }
+    
   }
+
+  async function getList(){
+    try {
+      const res = await fetch(`${BASE_URL}/todoList`)
+      const tasks = await res.json()
+      Array.isArray(tasks) ? setTasks(tasks) : setTasks([])
+    } catch (error) {
+      setErrorMessage(error.message)
+    }
+
+  }
+
+  useEffect(() => {
+    getList()
+    //clean function "unmount"
+    return () => {
+      setErrorMessage("")
+    }
+  }, [updated])
 
   return (
     <div className={style.container}>
       <PageTitle title = "My TO-DO List" />
       <Brief taskNo={tasks.length} />
       <TodoForm tasksList={tasks} addTaskToList={addTaskToList} />
+      {
+        errorMessage && <p className={style.error}>{errorMessage}</p>
+      }
       <TodoList tasksList = {tasks} deleteItem = {deleteItem} modifyItem = {modifyItem}/>
     </div>
   );

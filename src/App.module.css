@@ -7,3 +7,15 @@
   border-radius: 0.8em;
   min-height: 300px;
 }
+
+
+.error{
+  margin-inline: 40px;
+  display: flex;
+  color: red;
+  background: #FFF;
+  font-size: 0.7em;
+  padding: 2px 5px;
+  position: relative;
+  display: block;
+}

@@ -1,8 +1,8 @@
 import style from './PageTitle.module.css'
 
-function PageTitle(props){
+function PageTitle({title}){
   return(
-    <h1 className={style.pageTitle}>{props.title}</h1>
+    <h1 className={style.pageTitle}>{title}</h1>
   )
 }
 

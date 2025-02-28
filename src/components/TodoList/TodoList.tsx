@@ -1,8 +1,17 @@
+import React from 'react'
 import style from './todoList.module.css'
 import TodoListItem from "./TodoListItem";
+import { Task, DeleteItem, ModifyItem } from '../../App.types';
 
 
-export default function TodoList ({tasksList, deleteItem, modifyItem}){
+
+interface TodoListProps {
+  tasksList: Task[];
+  deleteItem: DeleteItem;
+  modifyItem: ModifyItem
+}
+
+export default function TodoList ({tasksList, deleteItem, modifyItem}: TodoListProps){
   return(
     <>
     {

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import {PageTitle} from './components/pageTitle';
 import {Brief} from './components/Breif';
 import {TodoForm} from './components/TodoForm'
@@ -6,6 +6,7 @@ import {TodoList} from './components/TodoList'
 import {FilterChoices} from './components/FilterChoices'
 import {filters} from './utils/enums'
 import style from './App.module.css'
+import { Task } from './App.types';
 
 
 // imagination how useState written
@@ -20,13 +21,13 @@ export const BASE_URL = "http://localhost:5000"
 
 
 function App() {
-  const [tasks, setTasks] = useState([]) //hook
-  const [errorMessage, setErrorMessage] = useState("")
-  const [updated, setUpdated] = useState(false)
-  const [filterBy, setFilterBy] = useState(null)
-  const [filterdTasks, setFilteredTasks] = useState([])
+  const [tasks, setTasks] = useState<Task[]>([]) //hook
+  const [filterdTasks, setFilteredTasks] = useState<Task[]>([])
+  const [errorMessage, setErrorMessage] = useState<string>("")
+  const [updated, setUpdated] = useState<boolean>(false)
+  const [filterBy, setFilterBy] = useState<string | null>(null)
 
-  async function addTaskToList (task){
+  async function addTaskToList (task: string): Promise<void>{
     try {
       await fetch(`${BASE_URL}/todoList`, {
         method: "POST",
@@ -37,13 +38,13 @@ function App() {
       })
       setUpdated(!updated)
       setErrorMessage("")
-    } catch (error) {
+    } catch (error: any) {
       setErrorMessage(error.message)
     }
     
   }
 
-  async function deleteItem(taskId){
+  async function deleteItem(taskId: string | number): Promise<void>{
     try {
       await fetch(`${BASE_URL}/todoList/${taskId}`,{
         method: "DELETE"
@@ -51,12 +52,12 @@ function App() {
       setUpdated(!updated)
       setErrorMessage("")
       
-    } catch (error) {
+    } catch (error: any) {
       setErrorMessage(error.message)
     }
   }
 
-  async function modifyItem(task){
+  async function modifyItem(task: Task): Promise<void>{
     try {
       await fetch(`${BASE_URL}/todoList/${task.id}`, {
         method: "PUT",
@@ -64,13 +65,13 @@ function App() {
       })
       setUpdated(!updated)
       setErrorMessage("")
-    } catch (error) {
+    } catch (error: any) {
       setErrorMessage(error.message)
     }
     
   }
 
-  function filterTasks (tasks, filterBy){
+  function filterTasks (tasks: Task[], filterBy: string | null): void{
     switch (filterBy) {
       case filters.COMPLETED:
         setFilteredTasks(tasks.filter(task => task.completed === true))
@@ -87,14 +88,14 @@ function App() {
     }
   }
 
-  function handleFilter(filter) {
+  function handleFilter(filter: string | null) {
     setFilterBy(filter)
   }
 
-  async function getList(){
+  async function getList():Promise<void>{
     try {
       const res = await fetch(`${BASE_URL}/todoList`)
-      const tasks = await res.json()
+      const tasks: Task[] = await res.json()
       if(Array.isArray(tasks)){
         setTasks(tasks)
         filterTasks(tasks, filterBy)
@@ -102,7 +103,7 @@ function App() {
         setTasks([])
         setFilteredTasks([])
       }
-    } catch (error) {
+    } catch (error:any) {
       setErrorMessage(error.message)
     }
 

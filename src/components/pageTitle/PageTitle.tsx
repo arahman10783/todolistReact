@@ -1,6 +1,11 @@
+import React from 'react'
 import style from './PageTitle.module.css'
 
-function PageTitle({title}){
+interface PageTitleProps {
+  title: string
+}
+
+function PageTitle({title}: PageTitleProps){
   return(
     <h1 className={style.pageTitle}>{title}</h1>
   )

@@ -1,18 +1,26 @@
+import React from 'react'
 import style from "./FilterChoices.module.css";
 import FiltrationBtn from "./FiltrationBtn";
-import { filters } from "../../utils/enums";
 
-export default function FilterChoices({ filterHandler, activeFilter }) {
+
+type Filter = "completed" | "inProgress" | null
+
+interface FilterChoicesProps{
+  filterHandler : (filter: Filter) => void
+  activeFilter: string | null
+}
+
+export default function FilterChoices({ filterHandler, activeFilter }: FilterChoicesProps) {
   //completed when task.completed === true
   //inProgress when task.completed === false
   //All
 
   function completedClickHandler() {
-    filterHandler(filters.COMPLETED);
+    filterHandler("completed");
   }
 
   function inProgressClickHandler() {
-    filterHandler(filters.IN_PROGRESS);
+    filterHandler("inProgress");
   }
 
   function clearFiltersHandler() {
@@ -23,20 +31,20 @@ export default function FilterChoices({ filterHandler, activeFilter }) {
       <FiltrationBtn 
         onClickHandler={completedClickHandler} 
         label="Completed" 
-        active={activeFilter === filters.COMPLETED} 
-        disabled = {activeFilter === filters.COMPLETED}
+        active={activeFilter === "completed"} 
+        // disabled = {activeFilter === "completed"}
         />
       <FiltrationBtn 
         onClickHandler={inProgressClickHandler} 
         label="InProgress" 
-        active={activeFilter === filters.IN_PROGRESS} 
-        disabled={activeFilter === filters.IN_PROGRESS} 
+        active={activeFilter === "inProgress"} 
+        // disabled={activeFilter === "inProgress"} 
         />
       <FiltrationBtn 
         onClickHandler={clearFiltersHandler} 
         label="All" 
         active={activeFilter === null} 
-        disabled = {activeFilter === null}
+        // disabled = {activeFilter === null}
         />
     </div>
   );

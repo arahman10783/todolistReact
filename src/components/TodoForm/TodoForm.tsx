@@ -1,22 +1,30 @@
+import React, { ChangeEvent, FormEvent } from 'react'
 import {useState} from 'react'
 import style from './TodoForm.module.css'
+import {Task} from '../../App.types'
 
-export default function TodoForm ({tasksList, addTaskToList}){
-  const [task, setTask] = useState("")
-  const [error, setError] = useState(false)
 
-  function checkDuplication(str) {
-    const duplicateArr = tasksList.filter(({title}) => title.toLowerCase() === str.toLowerCase())
+interface TodoFormProps {
+  tasksList: Task[]
+  addTaskToList : (task : string) => Promise<void>
+}
+
+export default function TodoForm ({tasksList, addTaskToList}: TodoFormProps){
+  const [task, setTask] = useState<string>("")
+  const [error, setError] = useState<boolean>(false)
+
+  function checkDuplication(str: string): boolean {
+    const duplicateArr: Task[] = tasksList.filter(({title}) => title.toLowerCase() === str.toLowerCase())
     return duplicateArr.length > 0 ? true : false
   }
 
-  function changeHandler(event){
+  function changeHandler(event: ChangeEvent<HTMLInputElement>):void{
     setTask(event.target.value)
     setError(false)
   }
 
 
-  function submitHandler (event){
+  function submitHandler (event: FormEvent<HTMLFormElement>){
     event.preventDefault()
     if(task.trim().length > 0 && !checkDuplication(task)){
       setError(false)

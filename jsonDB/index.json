@@ -1,21 +1,6 @@
 {
   "todoList": [
     {
-      "id": "6a96",
-      "title": "Learn HTML",
-      "completed": true
-    },
-    {
-      "id": "c188",
-      "title": "Learn CSS",
-      "completed": true
-    },
-    {
-      "id": "9696",
-      "title": "Build my First React App",
-      "completed": false
-    },
-    {
       "id": "1039",
       "title": "Build todoList",
       "completed": false
@@ -24,6 +9,11 @@
       "id": "5329",
       "title": "Learn JavaScript",
       "completed": true
+    },
+    {
+      "id": "02b6",
+      "title": "Learn Typescript",
+      "completed": false
     }
   ]
 }

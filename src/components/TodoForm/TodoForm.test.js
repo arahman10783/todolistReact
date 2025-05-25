@@ -24,7 +24,7 @@ describe("Todo Form", () => {
 
   test("Render the form", ()=>{
     render(<TodoForm tasksList={[]} />)
-    expect(screen.getByRole("addTaskForm")).toBeInTheDocument()
+    expect(screen.getByRole("form")).toBeInTheDocument()
   })
 
   test("Update task state on input change", ()=>{

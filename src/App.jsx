@@ -114,6 +114,7 @@ function App() {
     return () => {
       setErrorMessage("")
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updated, filterBy])
 
   return (

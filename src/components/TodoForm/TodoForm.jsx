@@ -28,7 +28,7 @@ export default function TodoForm ({tasksList, addTaskToList}){
   }
   return (
     <>
-      <form className={style["todo-form"]} onSubmit={submitHandler} role='addTaskForm'>
+      <form className={style["todo-form"]} onSubmit={submitHandler}>
           <input data-testid="inputTask" value={task} onChange={changeHandler} type="text" placeholder="Add task to do"/>
           <button data-testid="addBtn">Add to the List</button>
       </form>

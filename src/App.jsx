@@ -8,14 +8,6 @@ import {filters} from './utils/enums'
 import style from './App.module.css'
 
 
-// imagination how useState written
-// function useState(initialState){
-//   let state = initialState
-//   function setState(newState){
-//     state = newState
-//   }
-//   return [state, setState]
-// }
 export const BASE_URL = "http://localhost:5000"
 
 

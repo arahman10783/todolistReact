@@ -1,15 +1,18 @@
+import { useContext } from 'react';
 import style from './todoList.module.css'
 import TodoListItem from "./TodoListItem";
+import { TodoContext } from '../../context/TodoProvider';
 
 
 export default function TodoList ({tasksList, deleteItem, modifyItem}){
+  const { filteredTasks } = useContext(TodoContext);
   return(
     <>
     {
-      tasksList.length > 0 ?
+      filteredTasks.length > 0 ?
           <ul className={style["todo-list"]}>
             {
-              tasksList.map (task => <TodoListItem key ={task.id} task = {task} deleteItem = {deleteItem} modifyItem = {modifyItem} />)
+              filteredTasks.map (task => <TodoListItem key ={task.id} task = {task} deleteItem = {deleteItem} modifyItem = {modifyItem} />)
             }          
           </ul>
           : <p className={style.info}> No Tasks added yet </p>

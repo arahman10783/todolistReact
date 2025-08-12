@@ -6,6 +6,7 @@ import {TodoList} from './components/TodoList'
 import {FilterChoices} from './components/FilterChoices'
 import {filters} from './utils/enums'
 import style from './App.module.css'
+import { TodoProvider } from './context/TodoProvider';
 
 
 export const BASE_URL = "http://localhost:5000"
@@ -18,22 +19,7 @@ function App() {
   const [filterBy, setFilterBy] = useState(null)
   const [filterdTasks, setFilteredTasks] = useState([])
 
-  async function addTaskToList (task){
-    try {
-      await fetch(`${BASE_URL}/todoList`, {
-        method: "POST",
-        body: JSON.stringify({
-          title: task,
-          completed: false
-        })
-      })
-      setUpdated(!updated)
-      setErrorMessage("")
-    } catch (error) {
-      setErrorMessage(error.message)
-    }
-    
-  }
+
 
   async function deleteItem(taskId){
     try {
@@ -110,16 +96,18 @@ function App() {
   }, [updated, filterBy])
 
   return (
-    <div className={style.container}>
-      <PageTitle title = "My TO-DO List" />
-      <Brief taskNo={tasks.length} />
-      <TodoForm tasksList={tasks} addTaskToList={addTaskToList} />
-      <FilterChoices filterHandler={handleFilter} activeFilter = {filterBy} />
-      {
-        errorMessage && <p className={style.error}>{errorMessage}</p>
-      }
-      <TodoList tasksList = {filterdTasks} deleteItem = {deleteItem} modifyItem = {modifyItem}/>
-    </div>
+    <TodoProvider>
+      <div className={style.container}>
+        <PageTitle title = "My TO-DO List" />
+        <Brief taskNo={tasks.length} />
+        <TodoForm tasksList={tasks} addTaskToList={addTaskToList} />
+        <FilterChoices filterHandler={handleFilter} activeFilter = {filterBy} />
+        {
+          errorMessage && <p className={style.error}>{errorMessage}</p>
+        }
+        <TodoList deleteItem = {deleteItem} modifyItem = {modifyItem}/>
+      </div>
+    </TodoProvider>
   );
 }
 export default App

@@ -1,9 +1,12 @@
-import {useState} from 'react'
+import {useContext, useState} from 'react'
 import style from './TodoForm.module.css'
+import {BASE_URL} from '../../App'
+import { TodoContext } from '../../context/TodoProvider'
 
-export default function TodoForm ({tasksList, addTaskToList}){
+export default function TodoForm ({tasksList}){
   const [task, setTask] = useState("")
   const [error, setError] = useState(false)
+  const { setTasks, setFilteredTasks } = useContext(TodoContext);
 
   function checkDuplication(str) {
     const duplicateArr = tasksList.filter(({title}) => title.toLowerCase() === str.toLowerCase())
@@ -15,6 +18,22 @@ export default function TodoForm ({tasksList, addTaskToList}){
     setError(false)
   }
 
+  async function addTaskToList (task){
+      try {
+        await fetch(`${BASE_URL}/todoList`, {
+          method: "POST",
+          body: JSON.stringify({
+            title: task,
+            completed: false
+          })
+        })
+        setTasks(prevTasks => [...prevTasks, { title: task, completed: false }])
+        setFilteredTasks(prevFiltered => [...prevFiltered, { title: task, completed: false }])
+      } catch (error) {
+        console.log(error.message)
+      }
+      
+    }
 
   function submitHandler (event){
     event.preventDefault()

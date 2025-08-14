@@ -1,22 +1,30 @@
 import style from "./FilterChoices.module.css";
 import FiltrationBtn from "./FiltrationBtn";
 import { filters } from "../../utils/enums";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilteredTasks } from "../../store/taskSlice";
 
-export default function FilterChoices({ filterHandler, activeFilter }) {
+export default function FilterChoices() {
   //completed when task.completed === true
   //inProgress when task.completed === false
   //All
+  const activeFilter = useSelector(state => state.tasks.filterBy);
+  const dispatch = useDispatch();
+
+  function handleFilter(filter) {
+    dispatch(setFilteredTasks(filter));
+  }
 
   function completedClickHandler() {
-    filterHandler(filters.COMPLETED);
+    handleFilter(filters.COMPLETED);
   }
 
   function inProgressClickHandler() {
-    filterHandler(filters.IN_PROGRESS);
+    handleFilter(filters.IN_PROGRESS);
   }
 
   function clearFiltersHandler() {
-    filterHandler(null);
+    handleFilter(null);
   }
   return (
     <div className={style.container}>

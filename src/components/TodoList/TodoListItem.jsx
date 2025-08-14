@@ -1,8 +1,19 @@
 import {useState} from 'react'
 import style from './todoListItem.module.css'
+import { useDispatch } from 'react-redux'
+import { deleteTask, updateTask } from '../../store/taskSlice'
 
-export default function TodoListItem ({task, deleteItem, modifyItem}){
+export default function TodoListItem ({task}){
   const [isChecked, setIsChecked] = useState(task.completed)
+  const dispatch = useDispatch()
+
+  function deleteItem(taskId){
+     dispatch(deleteTask(taskId))
+    }
+
+  function modifyItem(task){
+      dispatch(updateTask(task))
+    }
 
   function handleComplete (event){
     setIsChecked(event.target.checked)
